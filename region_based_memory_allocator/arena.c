@@ -1,3 +1,5 @@
+#include<stdio.h>
+
 #define ARENA_SIZE 100 // node of list
 
 typedef enum {
@@ -5,8 +7,7 @@ typedef enum {
   INTEGER,
   FLOAT,
   DOUBLE,
-  UINT,
-  CUSTOM,
+  UINT
 }Types;
 
 typedef struct{
@@ -16,12 +17,19 @@ typedef struct{
 }Region;
   
 typedef struct{
+  Region*begin,*end;
   size_t region_count;
   size_t region_capacity;
   Region*region;
 }Arena;
 
-
+Region *begin=NULL;
+Region *end=NULL;
 void allocate_region(size_t size, size_t capacity,Types t){
-  // ON LUNCH TIME  
+
+}
+
+int main(){
+  
+  return 0;
 }
