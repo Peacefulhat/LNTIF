@@ -1,0 +1,3 @@
+Region_base_memory_management:
+https://en.wikipedia.org/wiki/Region-based_memory_management
+
