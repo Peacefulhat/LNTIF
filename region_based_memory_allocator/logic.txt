@@ -1,0 +1,41 @@
+// This idea is not clear to me this is some thing from wikipedia and mr tsoding. disclamer(i don't understand quite well only read for like couple of seconds.)
+
+
+Region based memory alloation:
+
+->fixed size allocation.: when you allocated memory for a region its size can not grow after memory allocation.here (tc:deallocation of memory is O(1)), because we just have to call free only once and memory will be relased for the buffer.
+
+->link list based allocation.: it list based even a single region can aquire most of the system memory. it depends.(tc:deallocation of memory is O(n)), because we have to call free for every single allocated node in a list .
+
+
+
+Arena: is like a container contaning regions.
+
+Regions: actual block of allocatable memory, regions like inside the arena.
+
+// fixed size memory allocation(structure)
+
+Arena:
+	begin and end: specify the start and end of arena.
+	capacity:how many regions can be allocated in a arena.
+	count: how many regions have been allocated.
+	
+Region:
+	count: keeps tracks of allocated space.
+	capacity: total space of the region.
+	type: define what kind of data is going to stored.
+        mem_space: this is where memory is allocated.
+        next: points to next region.	
+
+Function declarations:
+
+Arena* arena_alloc(): return a arena to work with
+void arena_free(Arena* arena): deallocates memory for allocated arena. 
+Region * region_alloc(capacity,type): return a Region, to work with based on type.
+
+void region_data_append(Region* region, type,count , some*data): append data based on type
+
+
+//Todo
+// list base implementation(node can have varying size)
+

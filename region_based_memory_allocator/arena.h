@@ -56,7 +56,7 @@ Arena* alloc_arena(){
 Region* alloc_region(size_t capacity,Types t){
   
   Region*region_block=malloc(sizeof(Region));
-  A_ASSERT(region!=NULL);
+  A_ASSERT(region_block!=NULL);
 
  switch(t){
     
@@ -111,8 +111,8 @@ Region* alloc_region(size_t capacity,Types t){
  return region_block;
 }
 
-void append_data(Region *block, Type t, void *data,size_t count){
-  A_ASSERT(region!=NULL);
+void append_data(Region *block, Types t, void *data,size_t count){
+  A_ASSERT(block!=NULL);
   Region *new_region=NULL;
   
   if(count > block->capacity-block->count){
@@ -126,9 +126,7 @@ void append_data(Region *block, Type t, void *data,size_t count){
     
    case CHAR:
     {
-      region_block->mem_region=malloc(sizeof(char)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
+
       region_block->next=NULL;
     }
     break;
