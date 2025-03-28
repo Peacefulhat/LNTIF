@@ -6,6 +6,10 @@
 #include<stddef.h>
 #include<assert.h>
 
+#ifdef PMATH
+#include"pmath.h"
+#endif
+
 #define A_ASSERT assert
 #define ARENA_REGION_CAPACITY 10 // no of nodes in arena
 

@@ -1,7 +1,10 @@
 // This idea is not clear to me this is some thing from wikipedia and mr tsoding. disclamer(i don't understand quite well only read for like couple of seconds.)
 
+// its all thanks to mr tsoding :)
 
 Region based memory alloation:
+
+Region:
 
 ->fixed size allocation.: when you allocated memory for a region its size can not grow after memory allocation.here (tc:deallocation of memory is O(1)), because we just have to call free only once and memory will be relased for the buffer.
 
@@ -29,13 +32,19 @@ Region:
 
 Function declarations:
 
-Arena* arena_alloc(): return a arena to work with
+Arena* arena_alloc(): return a arena to work with.
+size_t sizeof_types(type): return sizeof type wrt enums.
 void arena_free(Arena* arena): deallocates memory for allocated arena. 
 Region * region_alloc(capacity,type): return a Region, to work with based on type.
 
-void region_data_append(Region* region, type,count , some*data): append data based on type
+void region_data_append(Region* region, type,count , some*data): append data based on type, to a similar type of region if the region is full or then new allocation of same type is processed. and then the data is add.
 
+void region_free(Region* region):frees the dynamically allocated memory based on type.
+void alloc_free(Arena*arena):frees the arena.
 
+Arena Expansion.
+Region Reallocation.
+Arean compaction: just manage the links if the regions are free.
 //Todo
 // list base implementation(node can have varying size)
 
