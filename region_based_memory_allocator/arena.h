@@ -57,123 +57,60 @@ Arena* alloc_arena(){
   return alloc_space;
 }
 
+size_t sizeof_types(Types type){
+  switch(type){
+  case CHAR:
+    {
+    return sizeof(char);
+    }
+    break;
+    
+      case INT:
+    {
+    return sizeof(int);
+    }
+    break;
+    
+  case FLOAT:
+    {
+    return sizeof(float);
+    }
+    break;
+    
+    case DOUBLE:
+    {
+    return sizeof(double);
+    }
+    break;
+    
+  case UINT:
+    {
+    return sizeof(unsigned int);
+    }
+    break;
+  }
+  return -1;// indiacting not a valid type
+}
+
 Region* alloc_region(size_t capacity,Types t){
   
   Region*region_block=malloc(sizeof(Region));
   A_ASSERT(region_block!=NULL);
-
- switch(t){
-    
-   case CHAR:
-    {
-      region_block->mem_region=malloc(sizeof(char)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-    }
-    break;
-    
-  case INT:
-    {
-      region_block->mem_region=malloc(sizeof(int)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-    }
-    break;
-    
-      case FLOAT:
-    {
-      region_block->mem_region=malloc(sizeof(float)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-    }
-    break;
-    
-  case DOUBLE:
-    {
-      region_block->mem_region=malloc(sizeof(double)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-    }
-    break;
-
-  case UINT:
-    {
-      region_block->mem_region=malloc(sizeof(unsigned int)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-  }break;
-    
-  default:
-    
-  }
- A_ASSERT(region_block!=NULL);
- return region_block;
+  region_block->mem_region=malloc(sizeof_types(t)*capacity);
+  region_block->capacity=capacity;
+  region_block->type=t;
+  region_block->next=NULL;
+  A_ASSERT(region_block!=NULL);
+  return region_block;
+  
 }
 
 void append_data(Region *block, Types t, void *data,size_t count){
-  A_ASSERT(block!=NULL);
-  Region *new_region=NULL;
   
-  if(count > block->capacity-block->count){
-    new_region=alloc_region(block->capacity,t);
-    A_ASSERT(new_region!=NULL);
-    block->next=new_region;
-    block = new_region;
-  }
-  
- switch(t){
-    
-   case CHAR:
-    {
-
-      region_block->next=NULL;
-    }
-    break;
-    
-  case INT:
-    {
-      region_block->mem_region=malloc(sizeof(int)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-    }
-    break;
-    
-      case FLOAT:
-    {
-      region_block->mem_region=malloc(sizeof(float)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-    }
-    break;
-    
-  case DOUBLE:
-    {
-      region_block->mem_region=malloc(sizeof(double)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-    }
-    break;
-
-  case UINT:
-    {
-      region_block->mem_region=malloc(sizeof(unsigned int)*capacity);
-      region_block->capacity=capacity;
-      region_block->type=t;
-      region_block->next=NULL;
-  }break;
-    
-  default:
-    
-  }
-  
+  (void)block;
+  (void)t;
+  (void)data;
+  (void)count;
 }
 
 #endif // ARENA_IMP
