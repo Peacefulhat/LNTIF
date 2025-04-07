@@ -47,6 +47,10 @@ static Region *find_compatible_region(Arena *arr, Types t, size_t count);
 static Region *create_and_append_region(Arena *arr, Types t, size_t count);
 void region_free(Region* region);
 void arena_free(Arena* arena);
+void arena_print(Arena* arena);
+const char *type_to_string(Types t);
+void region_print(Region* region);
+
 
 #endif// ARENA_H
 
@@ -173,6 +177,75 @@ void arena_free(Arena* arena) {
   }
 
   free(arena);
+}
+
+const char *type_to_string(Types t) {
+    switch (t) {
+        case CHAR: return "CHAR";
+        case INT: return "INT";
+        case FLOAT: return "FLOAT";
+        case DOUBLE: return "DOUBLE";
+        case UINT: return "UINT";
+        default: return "UNKNOWN";
+    }
+}
+
+void region_print(Region* region) {
+    A_ASSERT(region != NULL);
+    printf("Region - Type: %s, Count: %zu, Capacity: %zu\n",
+           type_to_string(region->type), region->count, region->capacity);
+
+    size_t i;
+    switch (region->type) {
+        case CHAR: {
+            char *data = (char *)region->mem_region;
+            for (i = 0; i < region->count; i++) {
+                printf("  [%zu] = '%c'\n", i, data[i]);
+            }
+            break;
+        }
+        case INT: {
+            int *data = (int *)region->mem_region;
+            for (i = 0; i < region->count; i++) {
+                printf("  [%zu] = %d\n", i, data[i]);
+            }
+            break;
+        }
+        case FLOAT: {
+            float *data = (float *)region->mem_region;
+            for (i = 0; i < region->count; i++) {
+                printf("  [%zu] = %f\n", i, data[i]);
+            }
+            break;
+        }
+        case DOUBLE: {
+            double *data = (double *)region->mem_region;
+            for (i = 0; i < region->count; i++) {
+                printf("  [%zu] = %lf\n", i, data[i]);
+            }
+            break;
+        }
+        case UINT: {
+            unsigned int *data = (unsigned int *)region->mem_region;
+            for (i = 0; i < region->count; i++) {
+                printf("  [%zu] = %u\n", i, data[i]);
+            }
+            break;
+        }
+        default:
+            printf("  Unknown data type.\n");
+    }
+}
+
+void arena_print(Arena* arena) {
+    A_ASSERT(arena != NULL);
+    Region* temp = arena->begin;
+    int index = 0;
+    while (temp != NULL) {
+        printf("Region #%d:\n", index++);
+        region_print(temp);
+        temp = temp->next;
+    }
 }
 
 #endif // ARENA_IMP
