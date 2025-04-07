@@ -31,7 +31,12 @@ Region:
         next: points to next region.	
 
 Function declarations:
-
+Arean* arena_alloc();
+size_t sizeof_types();
+arena_free();
+region_alloc();
+region_free();
+append_data();
 Arena* arena_alloc(): return a arena to work with.
 size_t sizeof_types(type): return sizeof type wrt enums.
 void arena_free(Arena* arena): deallocates memory for allocated arena. 
@@ -45,6 +50,7 @@ void alloc_free(Arena*arena):frees the arena.
 Arena Expansion.
 Region Reallocation.
 Arean compaction: just manage the links if the regions are free.
+
 //Todo
 // list base implementation(node can have varying size)
 

@@ -37,10 +37,16 @@ typedef struct{
   size_t region_count;
   size_t region_capacity;
 }Arena;
+ 
 
 Arena* alloc_arena();
+size_t sizeof_types(Types type);
 Region* alloc_region(size_t capacity,Types t);
-
+void append_data(Arena *arr, Types t, void *data, size_t count);
+static Region *find_compatible_region(Arena *arr, Types t, size_t count);
+static Region *create_and_append_region(Arena *arr, Types t, size_t count);
+void region_free(Region* region);
+void arena_free(Arena* arena);
 
 #endif// ARENA_H
 
@@ -105,12 +111,68 @@ Region* alloc_region(size_t capacity,Types t){
   
 }
 
-void append_data(Region *block, Types t, void *data,size_t count){
-  
-  (void)block;
-  (void)t;
-  (void)data;
-  (void)count;
+static Region *find_compatible_region(Arena *arr, Types t, size_t count) {
+    Region *temp = arr->begin;
+    while (temp != NULL) {
+        if ((temp->capacity - temp->count) >= count && temp->type == t) {
+            return temp;
+        }
+        temp = temp->next;
+    }
+    return NULL;
+}
+
+static Region *create_and_append_region(Arena *arr, Types t, size_t count) {
+    size_t cap = 4 * count;
+    Region *new_region = alloc_region(cap, t);
+    A_ASSERT(new_region != NULL);
+
+    if (arr->begin == NULL) {
+        arr->begin = arr->end = new_region;
+    } else {
+        arr->end->next = new_region;
+        arr->end = new_region;
+    }
+
+    return new_region;
+}
+
+void append_data(Arena *arr, Types t, void *data, size_t count) {
+    A_ASSERT(arr != NULL);
+    A_ASSERT(data != NULL);
+
+    size_t type_size = sizeof_types(t);
+
+    Region *region = find_compatible_region(arr, t, count);
+    if (region == NULL) {
+        region = create_and_append_region(arr, t, count);
+    }
+
+    void *dest = (char *)region->mem_region + region->count * type_size;
+    memcpy(dest, data, count * type_size);
+    region->count += count;
+}
+
+void region_free(Region* region){
+  A_ASSERT(region!=NULL);
+  free(region->mem_region);
+  free(region);
+}
+
+
+
+void arena_free(Arena* arena) {
+  A_ASSERT(arena != NULL);
+  Region* temp = arena->begin;
+  A_ASSERT(temp!=NULL);
+
+  while (temp != NULL) {
+    Region* next = temp->next;
+    region_free(temp);
+    temp = next;
+  }
+
+  free(arena);
 }
 
 #endif // ARENA_IMP
