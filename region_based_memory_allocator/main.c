@@ -64,12 +64,12 @@ int main() {
         printf("---------------------\n\n");
     }
 
-    printf("Freeing all arenas...\n");
+    printf("Freeing all arenas...\n{");
     for (int i = 0; i < 100; i++) {
-        printf("Cleaning up Arena #%d...\n", i);
+        printf("%d,", i);
         arena_free(arenas[i]);
     }
-
+    printf("}\n");
     printf("Done. All arenas cleaned.\n");
     return 0;
 }
