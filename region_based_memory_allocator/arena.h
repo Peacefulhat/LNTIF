@@ -102,18 +102,19 @@ size_t sizeof_types(Types type){
   return -1;// indiacting not a valid type
 }
 
-Region* alloc_region(size_t capacity,Types t){
-  
-  Region*region_block=malloc(sizeof(Region));
-  A_ASSERT(region_block!=NULL);
-  region_block->mem_region=malloc(sizeof_types(t)*capacity);
-  region_block->capacity=capacity;
-  region_block->type=t;
-  region_block->next=NULL;
-  A_ASSERT(region_block!=NULL);
-  return region_block;
-  
+Region* alloc_region(size_t capacity, Types t) {
+    Region* region_block = malloc(sizeof(Region));
+    A_ASSERT(region_block != NULL);
+    region_block->mem_region = malloc(sizeof_types(t) * capacity);
+    A_ASSERT(region_block->mem_region != NULL);
+    
+    region_block->capacity = capacity;
+    region_block->type = t;
+    region_block->count = 0;
+    region_block->next = NULL;
+    return region_block;
 }
+
 
 static Region *find_compatible_region(Arena *arr, Types t, size_t count) {
     Region *temp = arr->begin;

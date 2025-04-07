@@ -5,42 +5,47 @@
 int random_int(int min, int max) {
     return min + rand() % (max - min + 1);
 }
-
 void fill_region_with_dummy_data(Arena* arena, Types type) {
     size_t count = random_int(3, 10);
 
     switch (type) {
         case CHAR: {
-            char data[10];
+            char *data = malloc(count * sizeof(char));
             for (size_t i = 0; i < count; i++) data[i] = 'A' + (rand() % 26);
             append_data(arena, CHAR, data, count);
+            free(data);
         } break;
 
         case INT: {
-            int data[10];
+            int *data = malloc(count * sizeof(int));
             for (size_t i = 0; i < count; i++) data[i] = random_int(1, 100);
             append_data(arena, INT, data, count);
+            free(data);
         } break;
 
         case FLOAT: {
-            float data[10];
+            float *data = malloc(count * sizeof(float));
             for (size_t i = 0; i < count; i++) data[i] = (float)rand() / RAND_MAX * 100.0f;
             append_data(arena, FLOAT, data, count);
+            free(data);
         } break;
 
         case DOUBLE: {
-            double data[10];
+            double *data = malloc(count * sizeof(double));
             for (size_t i = 0; i < count; i++) data[i] = (double)rand() / RAND_MAX * 100.0;
             append_data(arena, DOUBLE, data, count);
+            free(data);
         } break;
 
         case UINT: {
-            unsigned int data[10];
+            unsigned int *data = malloc(count * sizeof(unsigned int));
             for (size_t i = 0; i < count; i++) data[i] = (unsigned int)random_int(1, 200);
             append_data(arena, UINT, data, count);
+            free(data);
         } break;
     }
 }
+
 
 int main() {
     srand((unsigned int)time(NULL));
@@ -57,8 +62,8 @@ int main() {
         printf("Arena #%d filled with 100 regions.\n", i);
     }
 
-    printf("\nPrinting first 3 arenas as sample:\n\n");
-    for (int i = 0; i < 3; i++) {
+    printf("\nPrinting first 100 arenas as sample:\n\n");
+    for (int i = 0; i < 100; i++) {
         printf("----- Arena #%d -----\n", i);
         arena_print(arenas[i]);
         printf("---------------------\n\n");
