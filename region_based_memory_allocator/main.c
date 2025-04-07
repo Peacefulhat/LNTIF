@@ -1,34 +1,75 @@
 #define ARENA_IMP
 #include "arena.h"
+#include <time.h>
+
+int random_int(int min, int max) {
+    return min + rand() % (max - min + 1);
+}
+
+void fill_region_with_dummy_data(Arena* arena, Types type) {
+    size_t count = random_int(3, 10);
+
+    switch (type) {
+        case CHAR: {
+            char data[10];
+            for (size_t i = 0; i < count; i++) data[i] = 'A' + (rand() % 26);
+            append_data(arena, CHAR, data, count);
+        } break;
+
+        case INT: {
+            int data[10];
+            for (size_t i = 0; i < count; i++) data[i] = random_int(1, 100);
+            append_data(arena, INT, data, count);
+        } break;
+
+        case FLOAT: {
+            float data[10];
+            for (size_t i = 0; i < count; i++) data[i] = (float)rand() / RAND_MAX * 100.0f;
+            append_data(arena, FLOAT, data, count);
+        } break;
+
+        case DOUBLE: {
+            double data[10];
+            for (size_t i = 0; i < count; i++) data[i] = (double)rand() / RAND_MAX * 100.0;
+            append_data(arena, DOUBLE, data, count);
+        } break;
+
+        case UINT: {
+            unsigned int data[10];
+            for (size_t i = 0; i < count; i++) data[i] = (unsigned int)random_int(1, 200);
+            append_data(arena, UINT, data, count);
+        } break;
+    }
+}
 
 int main() {
-    Arena* arena = alloc_arena();
+    srand((unsigned int)time(NULL));
+    Arena* arenas[100];
 
-    // Example values to insert
-    char cs[] = {'A', 'B', 'C'};
-    int is[] = {1, 2, 3};
-    float fs[] = {1.1f, 2.2f};
-    double ds[] = {9.9, 8.8, 7.7, 6.6};
-    unsigned int us[] = {100, 200, 300};
+    printf("Creating 100 arenas and filling them...\n");
 
-    // Create 10 regions of various types
-    append_data(arena, CHAR, cs, 3);      // 1
-    append_data(arena, INT, is, 3);       // 2
-    append_data(arena, FLOAT, fs, 2);     // 3
-    append_data(arena, DOUBLE, ds, 4);    // 4
-    append_data(arena, UINT, us, 3);      // 5
+    for (int i = 0; i < 100; i++) {
+        arenas[i] = alloc_arena();
+        for (int j = 0; j < 100; j++) {
+            Types t = (Types)(rand() % 5);
+            fill_region_with_dummy_data(arenas[i], t);
+        }
+        printf("Arena #%d filled with 100 regions.\n", i);
+    }
 
-    // Reuse types to force new regions
-    append_data(arena, CHAR, cs, 3);      // 6
-    append_data(arena, INT, is, 3);       // 7
-    append_data(arena, FLOAT, fs, 2);     // 8
-    append_data(arena, DOUBLE, ds, 4);    // 9
-    append_data(arena, UINT, us, 3);      // 10
+    printf("\nPrinting first 3 arenas as sample:\n\n");
+    for (int i = 0; i < 3; i++) {
+        printf("----- Arena #%d -----\n", i);
+        arena_print(arenas[i]);
+        printf("---------------------\n\n");
+    }
 
-    // Print everything
-    arena_print(arena);
+    printf("Freeing all arenas...\n");
+    for (int i = 0; i < 100; i++) {
+        printf("Cleaning up Arena #%d...\n", i);
+        arena_free(arenas[i]);
+    }
 
-    // Cleanup
-    arena_free(arena);
+    printf("Done. All arenas cleaned.\n");
     return 0;
 }
