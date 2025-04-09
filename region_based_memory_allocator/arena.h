@@ -168,6 +168,12 @@ void region_free(Region* region){
 
 void arena_free(Arena* arena) {
   A_ASSERT(arena != NULL);
+  
+  if(arena->begin==NULL) {
+    free(arena);
+    return;
+  }
+
   Region* temp = arena->begin;
   A_ASSERT(temp!=NULL);
 
