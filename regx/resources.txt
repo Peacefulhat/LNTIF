@@ -1,5 +1,5 @@
 Regx Library in Rust by Mr.Tsoding:
-  > https://youtu.be/MH56D5M9xSQ?si=orjZdoZkKG1uPRL7
+> https://youtu.be/MH56D5M9xSQ?si=orjZdoZkKG1uPRL7
 
 Finite State Machine:
-  > https://en.wikipedia.org/wiki/Finite-state_machine
+> https://en.wikipedia.org/wiki/Finite-state_machine

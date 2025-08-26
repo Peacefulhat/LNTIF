@@ -43,7 +43,7 @@ void fill_range(uchar* begin, uint64 size, uchar state)
 {
     for(uint64 i = 0; i < size; ++i)
     {
-       begin[i]=state;
+        begin[i]=state;
     }
 }
 

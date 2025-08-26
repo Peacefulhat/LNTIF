@@ -11,4 +11,4 @@ int main(int argc, char** argv)
     free(s.buffer);
     return 0;
 }
-    
+
